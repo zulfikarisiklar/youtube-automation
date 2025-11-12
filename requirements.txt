@@ -1,0 +1,29 @@
+# Video Generation APIs
+openai>=1.12.0  # For Sora
+google-generativeai>=0.3.0  # For Google AI models
+
+# Audio Generation
+elevenlabs>=0.2.27
+
+# Video Processing
+moviepy>=1.0.3
+Pillow>=10.0.0
+
+# YouTube Upload
+google-api-python-client>=2.100.0
+google-auth-oauthlib>=1.1.0
+google-auth-httplib2>=0.1.1
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0
+pydantic>=2.5.0
+click>=8.1.7
+tqdm>=4.66.0
+pyyaml>=6.0.1
+
+# Optional: Speech-to-Text
+openai-whisper>=20231117
+
+# Video utilities
+ffmpeg-python>=0.2.0

@@ -1,0 +1,98 @@
+[
+  {
+    "video_request": {
+      "prompt": "A serene sunset over mountains with golden light",
+      "model": "veo",
+      "duration": 5
+    },
+    "audio_request": {
+      "text": "Watch this beautiful sunset over the majestic mountains",
+      "language": "en"
+    },
+    "youtube_metadata": {
+      "title": "Beautiful Mountain Sunset",
+      "description": "An AI-generated video showcasing a serene sunset over mountains. Perfect for relaxation and meditation.",
+      "tags": ["sunset", "mountains", "nature", "ai", "relaxation"],
+      "privacy_status": "private",
+      "category_id": "22"
+    },
+    "output_filename": "mountain_sunset.mp4"
+  },
+  {
+    "video_request": {
+      "prompt": "Ocean waves gently crashing on a sandy beach",
+      "model": "veo",
+      "duration": 5
+    },
+    "audio_request": {
+      "text": "Relax to the soothing sound of ocean waves",
+      "language": "en"
+    },
+    "youtube_metadata": {
+      "title": "Relaxing Ocean Waves",
+      "description": "AI-generated ocean waves video for relaxation and stress relief.",
+      "tags": ["ocean", "waves", "beach", "relaxation", "nature"],
+      "privacy_status": "private",
+      "category_id": "22"
+    },
+    "output_filename": "ocean_waves.mp4"
+  },
+  {
+    "video_request": {
+      "prompt": "A bustling city street at night with neon lights",
+      "model": "veo",
+      "duration": 5
+    },
+    "audio_request": {
+      "text": "Experience the vibrant energy of city life at night",
+      "language": "en"
+    },
+    "youtube_metadata": {
+      "title": "City Nightlife",
+      "description": "AI-generated video of vibrant city streets at night.",
+      "tags": ["city", "nightlife", "urban", "neon", "ai"],
+      "privacy_status": "private",
+      "category_id": "22"
+    },
+    "output_filename": "city_night.mp4"
+  },
+  {
+    "video_request": {
+      "prompt": "A peaceful forest with morning mist and sunbeams",
+      "model": "veo",
+      "duration": 5
+    },
+    "audio_request": {
+      "text": "Inmerse yourself in the tranquility of the forest",
+      "language": "es"
+    },
+    "youtube_metadata": {
+      "title": "Bosque Pacífico - Peaceful Forest",
+      "description": "Un video generado por IA de un bosque tranquilo con niebla matutina.",
+      "tags": ["forest", "nature", "peaceful", "morning", "bosque"],
+      "privacy_status": "private",
+      "category_id": "22",
+      "language": "es"
+    },
+    "output_filename": "peaceful_forest.mp4"
+  },
+  {
+    "video_request": {
+      "prompt": "Northern lights dancing in the arctic sky",
+      "model": "veo",
+      "duration": 5
+    },
+    "audio_request": {
+      "text": "Witness the magical beauty of the aurora borealis",
+      "language": "en"
+    },
+    "youtube_metadata": {
+      "title": "Northern Lights - Aurora Borealis",
+      "description": "AI-generated video of the stunning northern lights in the arctic sky.",
+      "tags": ["northern lights", "aurora", "arctic", "nature", "ai"],
+      "privacy_status": "private",
+      "category_id": "22"
+    },
+    "output_filename": "northern_lights.mp4"
+  }
+]
