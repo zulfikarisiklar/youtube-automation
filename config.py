@@ -16,6 +16,7 @@ class Config(BaseModel):
     openai_api_key: str = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY", ""))
     google_ai_api_key: str = Field(default_factory=lambda: os.getenv("GOOGLE_AI_API_KEY", ""))
     elevenlabs_api_key: str = Field(default_factory=lambda: os.getenv("ELEVENLABS_API_KEY", ""))
+    news_api_key: str = Field(default_factory=lambda: os.getenv("NEWS_API_KEY", ""))
 
     # YouTube Credentials
     youtube_client_secrets: str = Field(
@@ -36,6 +37,12 @@ class Config(BaseModel):
     output_dir: Path = Field(default_factory=lambda: Path(os.getenv("OUTPUT_DIR", "./output")))
     temp_dir: Path = Field(default_factory=lambda: Path(os.getenv("TEMP_DIR", "./temp")))
 
+    # News Settings
+    news_country: str = Field(default_factory=lambda: os.getenv("NEWS_COUNTRY", "us"))
+    news_category: Optional[str] = Field(default_factory=lambda: os.getenv("NEWS_CATEGORY"))
+    news_max_articles: int = Field(default_factory=lambda: int(os.getenv("NEWS_MAX_ARTICLES", "5")))
+    news_video_duration: int = Field(default_factory=lambda: int(os.getenv("NEWS_VIDEO_DURATION", "10")))
+
     def __init__(self, **data):
         super().__init__(**data)
         # Create directories if they don't exist
@@ -54,7 +61,8 @@ class Config(BaseModel):
             "openai": bool(self.openai_api_key),
             "google_ai": bool(self.google_ai_api_key),
             "elevenlabs": bool(self.elevenlabs_api_key),
-            "youtube": Path(self.youtube_client_secrets).exists()
+            "youtube": Path(self.youtube_client_secrets).exists(),
+            "news_api": bool(self.news_api_key)
         }
 
 

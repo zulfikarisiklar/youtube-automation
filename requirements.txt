@@ -27,3 +27,6 @@ openai-whisper>=20231117
 
 # Video utilities
 ffmpeg-python>=0.2.0
+
+# News API
+newsapi-python>=0.2.7

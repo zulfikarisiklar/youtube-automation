@@ -6,6 +6,7 @@ Automated YouTube video generation and upload system using AI models (Google Veo
 
 - 🎥 **Multiple AI Video Models**: Support for Google Veo and OpenAI Sora
 - 🎙️ **Multi-Language Audio**: Generate voiceovers in 30+ languages using ElevenLabs
+- 📰 **News Video Generation**: Automatically fetch news and create video compilations
 - 🔄 **Automated Workflow**: Generate video, add audio, and upload to YouTube
 - 📦 **Batch Processing**: Process multiple videos from a configuration file
 - 🎨 **Video Processing**: Merge audio/video, add text overlays, resize, and concatenate
@@ -84,6 +85,11 @@ YOUTUBE_CLIENT_SECRETS_FILE=client_secrets.json
 #### ElevenLabs (for Audio)
 - Visit: https://elevenlabs.io/
 - Sign up and get your API key from the dashboard
+
+#### NewsAPI (for News Features)
+- Visit: https://newsapi.org/
+- Sign up for a free account
+- Copy your API key from the dashboard
 
 #### YouTube Data API
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
@@ -180,6 +186,42 @@ python cli.py languages
 ```bash
 python cli.py info
 ```
+
+### News Video Commands
+
+Generate videos from news articles automatically:
+
+#### `news-videos` - Generate videos from headlines
+
+```bash
+python cli.py news-videos --country us --category technology --max-articles 5
+```
+
+#### `news-compilation` - Create merged news compilation
+
+```bash
+python cli.py news-compilation --country us --category sports --max-articles 5
+```
+
+#### `news-upload` - Generate and upload news compilation
+
+```bash
+python cli.py news-upload --country us --category technology --title "Tech News Today"
+```
+
+#### `news-search` - Search and generate videos
+
+```bash
+python cli.py news-search "artificial intelligence" --merge
+```
+
+#### `news-sources` - List available news sources
+
+```bash
+python cli.py news-sources --category technology
+```
+
+📖 **See [NEWS_FEATURES.md](NEWS_FEATURES.md) for complete news automation documentation.**
 
 ### Supported Languages
 
@@ -307,22 +349,30 @@ The system includes powerful video processing utilities:
 
 ```
 youtube-automation/
-├── cli.py                    # Command-line interface
-├── config.py                 # Configuration management
-├── models.py                 # Data models
-├── video_automation.py       # Main orchestrator
-├── audio_generator.py        # ElevenLabs integration
-├── video_processor.py        # Video processing utilities
-├── youtube_uploader.py       # YouTube upload functionality
+├── cli.py                       # Command-line interface
+├── config.py                    # Configuration management
+├── models.py                    # Data models
+├── video_automation.py          # Main orchestrator
+├── audio_generator.py           # ElevenLabs integration
+├── video_processor.py           # Video processing utilities
+├── youtube_uploader.py          # YouTube upload functionality
+├── news_fetcher.py              # NewsAPI integration
+├── news_video_generator.py      # News video generation
 ├── video_generators/
 │   ├── __init__.py
-│   ├── base.py              # Base video generator class
-│   ├── veo.py               # Google Veo implementation
-│   └── sora.py              # OpenAI Sora implementation
-├── requirements.txt          # Python dependencies
-├── .env.example             # Example configuration
+│   ├── base.py                 # Base video generator class
+│   ├── veo.py                  # Google Veo implementation
+│   └── sora.py                 # OpenAI Sora implementation
+├── requirements.txt             # Python dependencies
+├── .env.example                 # Example configuration
+├── README.md                    # Main documentation
+├── NEWS_FEATURES.md             # News features documentation
+├── QUICKSTART.md                # Quick start guide
 └── examples/
-    └── batch_config.json    # Example batch configuration
+    ├── batch_config.json        # Batch processing config
+    ├── simple_example.py        # Basic usage examples
+    ├── advanced_example.py      # Advanced features
+    └── news_examples.py         # News generation examples
 ```
 
 ## Extending the System

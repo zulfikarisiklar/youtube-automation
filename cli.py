@@ -245,6 +245,9 @@ def setup():
     # ElevenLabs API Key
     elevenlabs_key = click.prompt("ElevenLabs API Key", default="", show_default=False)
 
+    # News API Key
+    news_key = click.prompt("News API Key (get from https://newsapi.org/)", default="", show_default=False)
+
     # YouTube credentials
     click.echo("\nFor YouTube upload, you need to:")
     click.echo("1. Go to https://console.cloud.google.com/")
@@ -262,6 +265,7 @@ def setup():
 OPENAI_API_KEY={openai_key}
 GOOGLE_AI_API_KEY={google_key}
 ELEVENLABS_API_KEY={elevenlabs_key}
+NEWS_API_KEY={news_key}
 
 # YouTube API Credentials
 YOUTUBE_CLIENT_SECRETS_FILE={youtube_file}
@@ -279,6 +283,12 @@ MAX_VIDEO_DURATION=60
 # Output Settings
 OUTPUT_DIR=./output
 TEMP_DIR=./temp
+
+# News Settings
+NEWS_COUNTRY=us
+NEWS_CATEGORY=
+NEWS_MAX_ARTICLES=5
+NEWS_VIDEO_DURATION=10
 """
 
     env_path.write_text(env_content)
@@ -306,6 +316,7 @@ def info():
     click.echo(f"  OpenAI (Sora): {'✓ Configured' if keys_status['openai'] else '✗ Not configured'}")
     click.echo(f"  Google AI (Veo): {'✓ Configured' if keys_status['google_ai'] else '✗ Not configured'}")
     click.echo(f"  ElevenLabs: {'✓ Configured' if keys_status['elevenlabs'] else '✗ Not configured'}")
+    click.echo(f"  NewsAPI: {'✓ Configured' if keys_status['news_api'] else '✗ Not configured'}")
     click.echo(f"  YouTube: {'✓ Configured' if keys_status['youtube'] else '✗ Not configured'}")
 
     click.echo(f"\nDirectories:")
@@ -320,6 +331,207 @@ def info():
     click.echo(f"  Max Duration: {config.max_video_duration}s")
 
     click.echo()
+
+
+@cli.command()
+@click.option('--country', '-c', default='us', help='Country code (us, gb, ca, etc.)')
+@click.option('--category', help='News category (business, technology, sports, etc.)')
+@click.option('--max-articles', '-n', type=int, default=5, help='Maximum articles to fetch')
+@click.option('--duration', '-d', type=int, default=10, help='Duration per video in seconds')
+@click.option('--language', '-l', default='en', help='Audio language')
+@click.option('--model', '-m', type=click.Choice(['veo', 'sora']), default='veo', help='Video generation model')
+@click.option('--no-overlay', is_flag=True, help='Disable text overlay')
+@click.option('--query', '-q', help='Search query to filter headlines')
+def news_videos(country, category, max_articles, duration, language, model, no_overlay, query):
+    """Generate videos from news headlines."""
+    async def run():
+        from news_video_generator import NewsVideoGenerator
+
+        generator = NewsVideoGenerator()
+        generator.initialize(video_model=model)
+
+        video_paths = await generator.generate_videos_from_headlines(
+            country=country,
+            category=category,
+            max_articles=max_articles,
+            video_duration=duration,
+            language=language,
+            add_text_overlay=not no_overlay,
+            query=query
+        )
+
+        click.echo(f"\n✓ Generated {len(video_paths)} videos:")
+        for path in video_paths:
+            click.echo(f"  - {path}")
+
+    asyncio.run(run())
+
+
+@cli.command()
+@click.option('--country', '-c', default='us', help='Country code')
+@click.option('--category', help='News category')
+@click.option('--max-articles', '-n', type=int, default=5, help='Maximum articles')
+@click.option('--duration', '-d', type=int, default=10, help='Duration per video in seconds')
+@click.option('--language', '-l', default='en', help='Audio language')
+@click.option('--model', '-m', type=click.Choice(['veo', 'sora']), default='veo', help='Video generation model')
+@click.option('--output', '-o', help='Output file path for compilation')
+def news_compilation(country, category, max_articles, duration, language, model, output):
+    """Generate videos from news and merge into compilation."""
+    async def run():
+        from news_video_generator import NewsVideoGenerator
+
+        generator = NewsVideoGenerator()
+        generator.initialize(video_model=model)
+
+        # Generate individual videos
+        video_paths = await generator.generate_videos_from_headlines(
+            country=country,
+            category=category,
+            max_articles=max_articles,
+            video_duration=duration,
+            language=language
+        )
+
+        if not video_paths:
+            click.echo("✗ No videos were generated")
+            return
+
+        # Create compilation
+        output_path = Path(output) if output else None
+        compilation_path = await generator.create_news_compilation(
+            video_paths=video_paths,
+            output_path=output_path
+        )
+
+        click.echo(f"\n✓ Compilation created: {compilation_path}")
+
+    asyncio.run(run())
+
+
+@cli.command()
+@click.option('--country', '-c', default='us', help='Country code')
+@click.option('--category', help='News category')
+@click.option('--max-articles', '-n', type=int, default=5, help='Maximum articles')
+@click.option('--duration', '-d', type=int, default=10, help='Duration per video in seconds')
+@click.option('--language', '-l', default='en', help='Audio language')
+@click.option('--model', '-m', type=click.Choice(['veo', 'sora']), default='veo', help='Video generation model')
+@click.option('--title', '-t', help='YouTube video title')
+@click.option('--description', help='YouTube video description')
+@click.option('--tags', help='Comma-separated tags')
+@click.option('--privacy', type=click.Choice(['public', 'private', 'unlisted']), default='private', help='Privacy status')
+def news_upload(country, category, max_articles, duration, language, model, title, description, tags, privacy):
+    """Generate news compilation and upload to YouTube."""
+    async def run():
+        from news_video_generator import NewsVideoGenerator
+
+        generator = NewsVideoGenerator()
+        generator.initialize(video_model=model)
+
+        # Parse tags
+        tag_list = [tag.strip() for tag in tags.split(',')] if tags else None
+
+        # Create and upload
+        upload_info = await generator.create_and_upload_news_compilation(
+            country=country,
+            category=category,
+            max_articles=max_articles,
+            video_duration=duration,
+            language=language,
+            title=title,
+            description=description,
+            tags=tag_list,
+            privacy_status=privacy
+        )
+
+        click.echo(f"\n✓ Video uploaded successfully!")
+        click.echo(f"  URL: {upload_info['url']}")
+        click.echo(f"  Video ID: {upload_info['id']}")
+
+    asyncio.run(run())
+
+
+@cli.command()
+@click.argument('query')
+@click.option('--max-articles', '-n', type=int, default=5, help='Maximum articles')
+@click.option('--duration', '-d', type=int, default=10, help='Duration per video in seconds')
+@click.option('--language', '-l', default='en', help='Audio language')
+@click.option('--model', '-m', type=click.Choice(['veo', 'sora']), default='veo', help='Video generation model')
+@click.option('--merge', is_flag=True, help='Merge into single compilation')
+@click.option('--output', '-o', help='Output file path')
+def news_search(query, max_articles, duration, language, model, merge, output):
+    """Search news and generate videos.
+
+    Example: python cli.py news-search "artificial intelligence" --merge
+    """
+    async def run():
+        from news_video_generator import NewsVideoGenerator
+
+        generator = NewsVideoGenerator()
+        generator.initialize(video_model=model)
+
+        # Generate videos from search
+        video_paths = await generator.generate_videos_from_search(
+            query=query,
+            max_articles=max_articles,
+            video_duration=duration,
+            language=language
+        )
+
+        if not video_paths:
+            click.echo("✗ No videos were generated")
+            return
+
+        if merge:
+            # Create compilation
+            output_path = Path(output) if output else None
+            compilation_path = await generator.create_news_compilation(
+                video_paths=video_paths,
+                output_path=output_path
+            )
+            click.echo(f"\n✓ Compilation created: {compilation_path}")
+        else:
+            click.echo(f"\n✓ Generated {len(video_paths)} videos:")
+            for path in video_paths:
+                click.echo(f"  - {path}")
+
+    asyncio.run(run())
+
+
+@cli.command()
+@click.option('--category', help='Filter by category')
+@click.option('--country', help='Filter by country code')
+@click.option('--language', help='Filter by language')
+def news_sources(category, country, language):
+    """List available news sources."""
+    from news_fetcher import NewsFetcher
+    from config import config
+
+    if not config.news_api_key:
+        click.echo("✗ News API key not configured. Run 'python cli.py setup' first.")
+        return
+
+    fetcher = NewsFetcher(config.news_api_key)
+
+    try:
+        sources = fetcher.get_sources(
+            category=category,
+            country=country,
+            language=language
+        )
+
+        click.echo(f"\nAvailable News Sources ({len(sources)}):")
+        click.echo("-" * 60)
+        for source in sources:
+            click.echo(f"  {source['name']} ({source['id']})")
+            click.echo(f"    Category: {source.get('category', 'N/A')}")
+            click.echo(f"    Country: {source.get('country', 'N/A').upper()}")
+            click.echo(f"    Language: {source.get('language', 'N/A')}")
+            if source.get('description'):
+                click.echo(f"    Description: {source['description'][:80]}...")
+            click.echo()
+
+    except Exception as e:
+        click.echo(f"✗ Error: {e}")
 
 
 if __name__ == '__main__':
