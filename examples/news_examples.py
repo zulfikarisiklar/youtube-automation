@@ -158,7 +158,7 @@ async def example_upload_news_compilation():
             privacy_status="private"  # Use 'public' when ready to publish
         )
 
-        print(f"\nUpload successful!")
+        print("\nUpload successful!")
         print(f"Video URL: {upload_info['url']}")
         print(f"Video ID: {upload_info['id']}")
 

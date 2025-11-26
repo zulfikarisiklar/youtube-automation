@@ -1,5 +1,4 @@
 """Generate videos from news articles."""
-import asyncio
 from pathlib import Path
 from typing import Optional, List
 from datetime import datetime
@@ -134,9 +133,9 @@ class NewsVideoGenerator:
         Returns:
             List of generated video paths
         """
-        print(f"\n{'='*60}")
-        print(f"Fetching Top Headlines")
-        print(f"{'='*60}\n")
+        print("\n" + "="*60)
+        print("Fetching Top Headlines")
+        print("="*60 + "\n")
 
         # Fetch articles
         articles = self.news_fetcher.fetch_top_headlines(
@@ -250,10 +249,10 @@ class NewsVideoGenerator:
         if not video_paths:
             raise ValueError("No videos to merge")
 
-        print(f"\n{'='*60}")
-        print(f"Creating News Compilation")
+        print("\n" + "="*60)
+        print("Creating News Compilation")
         print(f"Merging {len(video_paths)} videos")
-        print(f"{'='*60}\n")
+        print("="*60 + "\n")
 
         if output_path is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -342,9 +341,9 @@ class NewsVideoGenerator:
         )
 
         # Upload to YouTube
-        print(f"\n{'='*60}")
-        print(f"Uploading to YouTube")
-        print(f"{'='*60}\n")
+        print("\n" + "="*60)
+        print("Uploading to YouTube")
+        print("="*60 + "\n")
 
         # Authenticate and upload
         self.video_automation.youtube_uploader.authenticate()
@@ -353,7 +352,7 @@ class NewsVideoGenerator:
             metadata=youtube_metadata
         )
 
-        print(f"\n✓ Upload complete!")
+        print("\n✓ Upload complete!")
         print(f"Video URL: {upload_info['url']}")
 
         return upload_info

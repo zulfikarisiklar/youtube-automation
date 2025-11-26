@@ -111,7 +111,7 @@ def upload(prompt, title, description, tags, model, duration, audio_text, langua
             audio_request=audio_request
         )
 
-        click.echo(f"\n✓ Video uploaded successfully!")
+        click.echo("\n✓ Video uploaded successfully!")
         click.echo(f"  URL: {upload_info['url']}")
         click.echo(f"  Video ID: {upload_info['id']}")
 
@@ -319,11 +319,11 @@ def info():
     click.echo(f"  NewsAPI: {'✓ Configured' if keys_status['news_api'] else '✗ Not configured'}")
     click.echo(f"  YouTube: {'✓ Configured' if keys_status['youtube'] else '✗ Not configured'}")
 
-    click.echo(f"\nDirectories:")
+    click.echo("\nDirectories:")
     click.echo(f"  Output: {config.output_dir}")
     click.echo(f"  Temp: {config.temp_dir}")
 
-    click.echo(f"\nDefault Settings:")
+    click.echo("\nDefault Settings:")
     click.echo(f"  Video Model: {config.default_video_model}")
     click.echo(f"  Language: {config.default_language}")
     click.echo(f"  Resolution: {config.video_resolution}")
@@ -443,7 +443,7 @@ def news_upload(country, category, max_articles, duration, language, model, titl
             privacy_status=privacy
         )
 
-        click.echo(f"\n✓ Video uploaded successfully!")
+        click.echo("\n✓ Video uploaded successfully!")
         click.echo(f"  URL: {upload_info['url']}")
         click.echo(f"  Video ID: {upload_info['id']}")
 

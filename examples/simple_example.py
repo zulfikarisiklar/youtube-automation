@@ -79,7 +79,7 @@ async def create_and_upload():
         audio_request=audio_request
     )
 
-    print(f"\nVideo uploaded successfully!")
+    print("\nVideo uploaded successfully!")
     print(f"Video URL: {result['url']}")
     print(f"Video ID: {result['id']}")
 

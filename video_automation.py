@@ -1,5 +1,4 @@
 """Main video automation orchestrator."""
-import asyncio
 from pathlib import Path
 from typing import Optional
 
@@ -229,10 +228,10 @@ class VideoAutomation:
 
         # Summary
         successful = sum(1 for r in results if r["success"])
-        print(f"\n{'='*60}")
-        print(f"BATCH PROCESSING COMPLETE")
+        print("\n" + "="*60)
+        print("BATCH PROCESSING COMPLETE")
         print(f"Successful: {successful}/{len(projects)}")
-        print(f"{'='*60}\n")
+        print("="*60 + "\n")
 
         return results
 

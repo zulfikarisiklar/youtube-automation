@@ -31,7 +31,7 @@ class VideoProcessor:
             import time
             output_path = Path(f"merged_video_{int(time.time())}.mp4")
 
-        print(f"Merging video and audio...")
+        print("Merging video and audio...")
         print(f"Video: {video_path}")
         print(f"Audio: {audio_path}")
 

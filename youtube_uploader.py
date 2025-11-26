@@ -4,7 +4,6 @@ import pickle
 from pathlib import Path
 from typing import Optional
 from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -157,7 +156,7 @@ class YouTubeUploader:
             video_id = response['id']
             video_url = f"https://www.youtube.com/watch?v={video_id}"
 
-            print(f"Upload successful!")
+            print("Upload successful!")
             print(f"Video ID: {video_id}")
             print(f"Video URL: {video_url}")
 
@@ -237,7 +236,7 @@ class YouTubeUploader:
 
             response = await asyncio.to_thread(request.execute)
 
-            print(f"Video updated successfully!")
+            print("Video updated successfully!")
             return response
 
         except HttpError as e:

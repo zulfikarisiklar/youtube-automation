@@ -67,7 +67,7 @@ class AudioGenerator:
         # Use default voice if not specified
         if voice_id is None:
             voice_id = self.POPULAR_VOICES["rachel"]
-            print(f"Using default voice: rachel")
+            print("Using default voice: rachel")
 
         print(f"Generating audio in language: {language}")
         print(f"Voice ID: {voice_id}")
